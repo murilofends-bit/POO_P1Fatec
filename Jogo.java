@@ -19,6 +19,13 @@ public class Jogo {
       } else {
         cacador.dormir();
       }
+    
+    if (!cacador.estaVivo()) {
+        System.out.println(cacador.nome + " morreu!");
+        System.out.println("Relatório final:");
+        System.out.println(cacador); // mostra mochila final
+        break; // encerra o jogo
+    }
 
       System.out.println(cacador);
       System.out.println("====================");

@@ -69,6 +69,10 @@ public class Personagem {
         }
     }
 
+    boolean estaVivo() {
+        return energia > 0;
+    }
+
     public String toString() {
         return String.format(
             "%s: e:%d, f:%d, s:%d, mochila:%s",
