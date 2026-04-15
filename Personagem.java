@@ -1,71 +1,78 @@
-public class Personagem { 
+import java.util.ArrayList;
+import java.util.Random;
 
-    String nome; 
-    private int energia; 
-    private int fome; 
-    private int sono; 
+public class Personagem {
 
-    Personagem() { 
-        System.out.println("Construindo novo personagem"); 
-        energia = 10; 
-        fome = 0; 
-        sono = 0; 
-    } 
+    String nome;
+    private int energia;
+    private int fome;
+    private int sono;
+    private ArrayList<String> mochila;
 
-    Personagem(int energia, int fome, int sono) { 
-        System.out.println("Construindo novo personagem"); 
-        this.energia = energia < 0 || energia > 10 ? 10 : energia; 
-        this.fome = fome >= 0 && fome <= 10 ? fome : 0; 
-        this.sono = sono >= 0 && sono <= 10 ? sono : 0; 
-    } 
+    private Random random = new Random();
 
-    void cacar() { 
-        if (energia >= 2) { 
-            System.out.printf("%s caçando\n", nome); 
-            energia -= 2; // energia = energia - 2 
-        } else { 
-            System.out.printf(
-                "%s sem energia para caçar\n", 
-                nome
-            ); 
-        } 
+    Personagem() {
+        System.out.println("Construindo novo personagem");
+        energia = 10;
+        fome = 0;
+        sono = 0;
+        mochila = new ArrayList<>();
+    }
 
-        // fome += 1
+    Personagem(int energia, int fome, int sono) {
+        System.out.println("Construindo novo personagem");
+        this.energia = energia < 0 || energia > 10 ? 10 : energia;
+        this.fome = fome >= 0 && fome <= 10 ? fome : 0;
+        this.sono = sono >= 0 && sono <= 10 ? sono : 0;
+        mochila = new ArrayList<>();
+    }
+
+    void cacar() {
+        if (energia >= 2) {
+            System.out.printf("%s caçando\n", nome);
+            energia -= 2;
+            String[] itens = {"pena", "couro", "osso", "presa", "garra"};
+            String itemSorteado = itens[random.nextInt(itens.length)];
+            mochila.add(itemSorteado);
+            System.out.println(nome + " encontrou: " + itemSorteado);
+
+        } else {
+            System.out.printf("%s sem energia para caçar\n", nome);
+        }
+
         if (fome < 10) {
             fome = fome + 1;
         }
 
-        // sono += 1 (limitado a 10)
-        sono = sono == 10 ? sono : sono + 1; 
-    } 
+        sono = sono == 10 ? sono : sono + 1;
+    }
 
-    // método comer 
-    void comer() { 
-        if (fome >= 1) { 
-            System.out.println(nome + " comendo"); 
-            energia = Math.min(energia + 1, 10); 
-            fome--; 
-        } else { 
-            System.out.println(nome + " sem fome"); 
-        } 
-    } 
+    // método comer
+    void comer() {
+        if (fome >= 1) {
+            System.out.println(nome + " comendo");
+            energia = Math.min(energia + 1, 10);
+            fome--;
+        } else {
+            System.out.println(nome + " sem fome");
+        }
+    }
 
-    // método dormir 
-    void dormir() { 
-        if (sono >= 1) { 
-            System.out.print(nome + " dormindo\n"); 
-            energia = energia == 10 ? energia : energia + 1; 
-            sono -= 1; 
-        } else { 
+    // método dormir
+    void dormir() {
+        if (sono >= 1) {
+            System.out.print(nome + " dormindo\n");
+            energia = energia == 10 ? energia : energia + 1;
+            sono -= 1;
+        } else {
             System.out.println(nome + " sem sono");
-        } 
-    } 
+        }
+    }
 
-    public String toString() { 
-        // nome: e:5, f:4, s:8 
+    public String toString() {
         return String.format(
-            "%s: e:%d, f:%d, s:%d", 
-            nome, energia, fome, sono 
-        );   
-    } 
+            "%s: e:%d, f:%d, s:%d, mochila:%s",
+            nome, energia, fome, sono, mochila
+        );
+    }
 }
