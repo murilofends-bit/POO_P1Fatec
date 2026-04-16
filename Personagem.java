@@ -12,7 +12,7 @@ public class Personagem {
 
     private Random random = new Random();
 
-    Personagem() { //john caçador
+    Personagem() {
         System.out.println("Construindo novo personagem");
         energia = 10;
         fome = 0;
@@ -21,9 +21,9 @@ public class Personagem {
         repertorio = new ArrayList<>();
     } 
 
-    Personagem(String nome, int energia, int fome, int sono) { // tico trovador
-        this.nome = nome;
+    Personagem(String nome, int energia, int fome, int sono) {
         System.out.println("Construindo novo personagem\n");
+        this.nome = nome;
         this.energia = energia < 0 || energia > 10 ? 10 : energia;
         this.fome = fome >= 0 && fome <= 10 ? fome : 0;
         this.sono = sono >= 0 && sono <= 10 ? sono : 0;
@@ -53,7 +53,6 @@ public class Personagem {
         sono = sono == 10 ? sono : sono + 1;
     }
 
-    // método comer
     void comer() {
         if (fome >= 1) {
             System.out.println(nome + " comendo");
@@ -64,7 +63,6 @@ public class Personagem {
         }
     }
 
-    // método dormir
     void dormir() {
         if (sono >= 1) {
             System.out.print(nome + " dormindo\n");
@@ -80,9 +78,7 @@ public class Personagem {
     }
 
     void aprenderMusica(ArrayList<Musica> disponiveis) {
-        Musica musicaSorteada = disponiveis.get(
-            random.nextInt(disponiveis.size())
-        );
+        Musica musicaSorteada = disponiveis.get(random.nextInt(disponiveis.size()));
 
         if (repertorio.contains(musicaSorteada)) {
             System.out.println(nome + " já conhece: " + musicaSorteada);
@@ -94,6 +90,45 @@ public class Personagem {
     
     void adicionarMusicaInicial(Musica musica) {
         repertorio.add(musica);
+    }
+
+    Musica sortearMusicaDoRepertorio() {
+        if (repertorio.isEmpty()) {
+            return null;
+        }
+        return repertorio.get(random.nextInt(repertorio.size()));
+    }
+
+    void perderEnergia() {
+        energia = energia - 1;
+    }    
+
+    void aprenderMusica(Musica musica) {
+        if (!repertorio.contains(musica)) {
+            repertorio.add(musica);
+        }
+    }
+
+    void duelar(Personagem adversario) {
+        Musica musica = sortearMusicaDoRepertorio();
+
+        if (musica == null) {
+            System.out.println(nome + " tentou duelar, mas não conhece nenhuma música");
+            return;
+        }
+
+        System.out.println(nome + " iniciou duelo com: " + musica);
+
+        if (adversario.repertorio.contains(musica)) {
+            System.out.println("Ambos conhecem a música! Público entediado...");
+            this.perderEnergia();
+            adversario.perderEnergia();
+        } else {
+            System.out.println(adversario.nome + " não conhece a música! Perdeu o duelo");
+            adversario.perderEnergia();
+            adversario.aprenderMusica(musica);
+            System.out.println(adversario.nome + " aprendeu: " + musica);
+        }
     }
 
     public String toString() {

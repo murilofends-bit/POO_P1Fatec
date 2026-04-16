@@ -24,70 +24,94 @@ public class Jogo {
     playlist.add(new Musica("Despacito"));
     playlist.add(new Musica("Mockingbird"));
 
-while (true){
+    boolean campeaoDeclarado = false;
 
-    // loop john
-    if (cacador.estaVivo()) {
-        int acao = random.nextInt(4);
+    while (true){
 
-        if (acao == 0) {
-            cacador.cacar();
-        } else if (acao == 1) {
-            cacador.comer();
-        } else if (acao == 2) {
-            cacador.dormir();
-        } else {
+        // loop john
+        if (cacador.estaVivo()) {
             cacador.aprenderMusica(playlist);
+
+            int acao = random.nextInt(3);
+
+            if (acao == 0) {
+                cacador.cacar();
+            } else if (acao == 1) {
+                cacador.comer();
+            } else {
+                cacador.dormir();
+            }
         }
-    }
 
-    // loop tico
-    if (tico.estaVivo()) {
-        tico.aprenderMusica(playlist);
-        
-        int acaoTico = random.nextInt(100);
-        
-        if (acaoTico < 20) {
-            tico.cacar();
-        } else if (acaoTico < 40) {
-            tico.comer();
-        } else {
-            tico.dormir();
+        // loop tico
+        if (tico.estaVivo()) {
+            tico.aprenderMusica(playlist);
+
+            int acaoTico = random.nextInt(100);
+
+            if (acaoTico < 20) {
+                tico.cacar();
+            } else if (acaoTico < 40) {
+                tico.comer();
+            } else {
+                tico.dormir();
+            }
         }
-    }
 
-    // morte dos dois
-    if (!cacador.estaVivo() && !tico.estaVivo()) {
-        System.out.println("Ambos morreram!");
-        System.out.println("Relatório final:");
-        System.out.println(cacador);
-        System.out.println(tico);
-        break;
-    }
+        // duelo (só se ambos estiverem vivos)
+        if (cacador.estaVivo() && tico.estaVivo()) {
+            int quemDuela = random.nextInt(2);
 
-    // morte do john
-    if (!cacador.estaVivo()) {
-        System.out.println(cacador.nome + " morreu!");
-        System.out.println(cacador);
-    }
-    // morte do tico
-    if (!tico.estaVivo()) {
-        System.out.println(tico.nome + " morreu!");
-        System.out.println(tico);
-    }
+            if (quemDuela == 0) {
+                cacador.duelar(tico);
+            } else {
+                tico.duelar(cacador);
+            }
+        }
 
-    // estatisticas
-    if (cacador.estaVivo()) {
-        System.out.println(cacador);
-    }
+        // morte dos dois
+        if (!cacador.estaVivo() && !tico.estaVivo()) {
+            System.out.println("Ambos morreram!");
+            System.out.println("Relatório final:");
+            System.out.println(cacador);
+            System.out.println(tico);
+            break;
+        }
 
-    if (tico.estaVivo()) {
-        System.out.println(tico);
-    }
+        // morte do john
+        if(!campeaoDeclarado){
+            if (!cacador.estaVivo() && tico.estaVivo()) {
+                System.out.println(cacador.nome + " morreu!");
+                System.out.println(cacador);
+                System.out.println(tico.nome + " é o campeão!");
+                campeaoDeclarado = true;
+                
+            }
+        }
 
-    System.out.println("==========================================\n");
+        // morte do tico
+        if(!campeaoDeclarado){
+            if (!tico.estaVivo() && cacador.estaVivo()) {
+                System.out.println(tico.nome + " morreu!");
+                System.out.println(tico);
+                System.out.println(cacador.nome + " é o campeão!");
+                campeaoDeclarado = true;
+                
+            }
+        }
 
-    Thread.sleep(5000);
+        // estatísticas
+        if (cacador.estaVivo()) {
+            System.out.println(cacador);
+        }
+
+        if (tico.estaVivo()) {
+            System.out.println(tico);
+        }
+
+        System.out.println("==========================================\n");
+
+        Thread.sleep(5000);
     }
   }
 }
