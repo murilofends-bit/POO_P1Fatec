@@ -12,22 +12,23 @@ public class Personagem {
 
     private Random random = new Random();
 
-    Personagem() {
+    Personagem() { //john caçador
         System.out.println("Construindo novo personagem");
         energia = 10;
         fome = 0;
         sono = 0;
         mochila = new ArrayList<>();
         repertorio = new ArrayList<>();
-    }
+    } 
 
-    Personagem(int energia, int fome, int sono) {
-        System.out.println("Construindo novo personagem");
+    Personagem(String nome, int energia, int fome, int sono) { // tico trovador
+        this.nome = nome;
+        System.out.println("Construindo novo personagem\n");
         this.energia = energia < 0 || energia > 10 ? 10 : energia;
         this.fome = fome >= 0 && fome <= 10 ? fome : 0;
         this.sono = sono >= 0 && sono <= 10 ? sono : 0;
-        mochila = new ArrayList<>();
         repertorio = new ArrayList<>();
+        mochila = new ArrayList<>();
     }
 
     void cacar() {
@@ -70,7 +71,7 @@ public class Personagem {
             energia = energia == 10 ? energia : energia + 1;
             sono -= 1;
         } else {
-            System.out.println(nome + " sem sono");
+            System.out.println(nome + " deitou sem sono");
         }
     }
 
@@ -79,7 +80,6 @@ public class Personagem {
     }
 
     void aprenderMusica(ArrayList<Musica> disponiveis) {
-
         Musica musicaSorteada = disponiveis.get(
             random.nextInt(disponiveis.size())
         );
@@ -91,10 +91,14 @@ public class Personagem {
             System.out.println(nome + " aprendeu: " + musicaSorteada);
         }
     }
+    
+    void adicionarMusicaInicial(Musica musica) {
+        repertorio.add(musica);
+    }
 
     public String toString() {
         return String.format(
-            "%s: e:%d, f:%d, s:%d, mochila:%s, repertorio:%s",
+            "\n*****Status*****\n%s: e:%d, f:%d, s:%d\nmochila:%s\nrepertorio:%s",
             nome, energia, fome, sono, mochila, repertorio
         );
     }
